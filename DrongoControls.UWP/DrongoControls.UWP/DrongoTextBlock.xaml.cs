@@ -29,6 +29,7 @@ namespace DrongoControls.UWP
 
         Size NewSize;
 
+        public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(DrongoTextBlock), new PropertyMetadata("Text"));
         public string Text
         {
             get
@@ -37,8 +38,8 @@ namespace DrongoControls.UWP
             }
             set
             {
+                this.SetValue(TextProperty, value);
                 Animate(value, fixedWidth:true);
-                //tbCurrent.Text = value;
             }
         }
 
@@ -151,16 +152,8 @@ namespace DrongoControls.UWP
 
             IsText = isText;
             NewContent = newContent;
-            AnimateHeight.Begin();
 
-            //if (IsText)
-            //{
-            //    TextNonAnimated = (string)NewContent;
-            //}
-            //else
-            //{
-            //    SetInlinePrivate(tbCurrent, (InlineCollection)NewContent, false);
-            //}
+            FadeOut.Begin();
         }
 
         private void AnimateHeight_Completed(object sender, object e)
@@ -173,7 +166,17 @@ namespace DrongoControls.UWP
             {
                 SetInlinePrivate(tbCurrent, (InlineCollection)NewContent, false);
             }
-            NewSize = NewSize;
+            FadeIn.Begin();
+        }
+
+        private void FadeIn_Completed(object sender, object e)
+        {
+
+        }
+
+        private void FadeOut_Completed(object sender, object e)
+        {
+            AnimateHeight.Begin();
         }
     }
 }
