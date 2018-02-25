@@ -67,16 +67,17 @@ namespace DrongoControls.UWP
             tbCurrent.Width = Double.NaN;
         }
 
-        public TextBlock CalculateHeight(TextBlock currentTextBlock)
+        public TextBlock CalculateHeight(TextBlock currentTextBlock, double width)
         {
             var tb = new TextBlock { Text = currentTextBlock.Text, FontSize = currentTextBlock.FontSize };
-            tb.MinWidth = 0;
-            tb.MaxWidth = currentTextBlock.RenderSize.Width;
+            tb.MinWidth = width;
+            tb.MaxWidth = width;
+            tb.Width = width;
             tb.MaxHeight = Double.PositiveInfinity;
             tb.TextWrapping = TextWrapping.WrapWholeWords;
 
-            tb.Measure(new Size(currentTextBlock.RenderSize.Width, Double.PositiveInfinity));
-            tb.Arrange(new Rect(0, 0, tb.DesiredSize.Width, tb.DesiredSize.Height));
+            tb.Measure(new Size(width, Double.PositiveInfinity));
+            tb.Arrange(new Rect(0, 0, width, tb.DesiredSize.Height));
             tb.UpdateLayout();
 
             return tb;
@@ -110,7 +111,7 @@ namespace DrongoControls.UWP
         public void Animate(object newContent, bool isText = true, bool fixedWidth = true)
         {
             //Get current size
-            Size oldSize = CalculateHeight(tbCurrent).DesiredSize;
+            Size oldSize = CalculateHeight(tbCurrent, tbCurrent.RenderSize.Width).DesiredSize;
 
             DrongoTextBlock dTb = new DrongoTextBlock();
             if (fixedWidth)
@@ -133,7 +134,7 @@ namespace DrongoControls.UWP
             }
 
             // New size
-            Size newSize = dTb.CalculateHeight(dTb.tbCurrent).DesiredSize;
+            Size newSize = dTb.CalculateHeight(dTb.tbCurrent, oldSize.Width).DesiredSize;
 
             if (fixedWidth)
             {
