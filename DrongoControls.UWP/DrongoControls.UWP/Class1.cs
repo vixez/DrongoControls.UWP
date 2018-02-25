@@ -15,7 +15,7 @@ namespace DrongoControls.UWP
 
         public static string Testing2()
         {
-            return "string";
+            return "string2";
         }
     }
 }
