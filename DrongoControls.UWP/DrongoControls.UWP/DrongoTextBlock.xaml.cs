@@ -43,6 +43,21 @@ namespace DrongoControls.UWP
             }
         }
 
+        public static DependencyProperty AutoWidthProperty = DependencyProperty.Register("AutoWidth", typeof(bool), typeof(DrongoTextBlock), new PropertyMetadata("AutoWidth"));
+        public bool AutoWidth
+        {
+            get { return (bool)GetValue(AutoWidthProperty); }
+
+            set
+            {
+                this.SetValue(AutoWidthProperty, value);
+                if (value)
+                {
+                    tbCurrent.Width = Double.NaN;
+                }
+            }
+        }
+
         public string TextNonAnimated
         {
             get
@@ -61,11 +76,6 @@ namespace DrongoControls.UWP
         public DrongoTextBlock()
         {
             this.InitializeComponent();
-        }
-
-        public void AutoHeight()
-        {
-            tbCurrent.Width = Double.NaN;
         }
 
         public TextBlock CalculateHeight(TextBlock currentTextBlock, double width)
@@ -166,6 +176,7 @@ namespace DrongoControls.UWP
             {
                 SetInlinePrivate(tbCurrent, (InlineCollection)NewContent, false);
             }
+            tbCurrent.Height = Double.NaN;
             FadeIn.Begin();
         }
 
