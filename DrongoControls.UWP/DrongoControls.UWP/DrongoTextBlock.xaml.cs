@@ -28,8 +28,20 @@ namespace DrongoControls.UWP
             }
             set
             {
-                Animate(value);
+                Animate(value, fixedWidth:true);
                 //tbCurrent.Text = value;
+            }
+        }
+
+        public string TextNonAnimated
+        {
+            get
+            {
+                return tbCurrent.Text;
+            }
+            set
+            {
+                tbCurrent.Text = value;
             }
         }
 
@@ -41,7 +53,11 @@ namespace DrongoControls.UWP
         public Size CalculateHeight(TextBlock currentTextBlock)
         {
             var tb = new TextBlock { Text = currentTextBlock.Text, FontSize = currentTextBlock.FontSize };
-            tb.Measure(new Size(Double.PositiveInfinity, currentTextBlock.ActualWidth));
+            tb.MaxWidth = currentTextBlock.RenderSize.Width;
+            tb.TextWrapping = TextWrapping.WrapWholeWords;
+
+            tb.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
+           
             return tb.DesiredSize;
         }
 
@@ -55,11 +71,13 @@ namespace DrongoControls.UWP
             SetInlinePrivate(tbCurrent, collection);
         }
 
-        private void SetInlinePrivate(TextBlock dTb, InlineCollection collection)
+        private void SetInlinePrivate(TextBlock dTb, InlineCollection collection, bool animate = true)
         {
             if (collection == null) return;
-            Animate(collection);
-
+            if (animate)
+            {
+                Animate(collection, fixedWidth: true);
+            }
 
             tbCurrent.Inlines.Clear();
             foreach (var item in collection.ToList())
@@ -68,36 +86,51 @@ namespace DrongoControls.UWP
             }
         }
 
-        public void AnimatedText(DrongoTextBlock dTb, string text)
-        {
-            dTb.Text = text;
-        }
-
-        public void AnimatedInline(DrongoTextBlock dTb, InlineCollection collection)
-        {
-            dTb.SetInlinePrivate(dTb.tbCurrent, collection);
-        }
-
-        public void Animate(object newContent, bool isText = true)
+        public void Animate(object newContent, bool isText = true, bool fixedWidth = true)
         {
             //Get current size
             Size oldSize = CalculateHeight(tbCurrent);
 
             DrongoTextBlock dTb = new DrongoTextBlock();
-            dTb.Width = tbCurrent.ActualWidth;
-            dTb.Height = tbCurrent.ActualHeight;
-            dTb.SetInline(tbCurrent.Inlines);
-            if (isText)
+            if (fixedWidth)
             {
-                AnimatedText(dTb, (string)newContent);
+                dTb.Width = tbCurrent.RenderSize.Width;
             }
             else
             {
-                AnimatedInline(dTb, (InlineCollection)newContent);
+                dTb.Height = tbCurrent.RenderSize.Height;
             }
 
+            if (isText)
+            {
+                dTb.TextNonAnimated = (string)newContent;
+            }
+            else
+            {
+                SetInlinePrivate(dTb.tbCurrent, (InlineCollection)newContent, false);
+            }
+
+            // New size
             Size newSize = dTb.CalculateHeight(dTb.tbCurrent);
             newSize = newSize;
+
+            if (fixedWidth)
+            {
+                tbCurrent.Height = newSize.Height;
+            }
+            else
+            {
+                tbCurrent.Width = newSize.Width;
+            }
+
+            if (isText)
+            {
+                TextNonAnimated = (string)newContent;
+            }
+            else
+            {
+                SetInlinePrivate(tbCurrent, (InlineCollection)newContent, false);
+            }
         }
     }
 }
