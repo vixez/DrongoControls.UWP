@@ -25,6 +25,7 @@ namespace DrongoControls.UWPTest
         public MainPage()
         {
             this.InitializeComponent();
+            drongoTextBlock.AutoHeight();
         }
 
         private void btnSetText_Tapped(object sender, TappedRoutedEventArgs e)

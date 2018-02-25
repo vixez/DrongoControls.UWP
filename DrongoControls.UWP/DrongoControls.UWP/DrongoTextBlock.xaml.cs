@@ -20,6 +20,15 @@ namespace DrongoControls.UWP
 {
     public sealed partial class DrongoTextBlock : UserControl
     {
+        public static DependencyProperty NewHeightProperty = DependencyProperty.Register("NewHeight", typeof(double), typeof(DrongoTextBlock), new PropertyMetadata("NewHeight"));
+        public double NewHeight
+        {
+            get { return (double)GetValue(NewHeightProperty); }
+            set { this.SetValue(NewHeightProperty, value); }
+        }
+
+        Size NewSize;
+
         public string Text
         {
             get
@@ -45,20 +54,32 @@ namespace DrongoControls.UWP
             }
         }
 
+        bool IsText;
+        object NewContent;
+
         public DrongoTextBlock()
         {
             this.InitializeComponent();
         }
 
-        public Size CalculateHeight(TextBlock currentTextBlock)
+        public void AutoHeight()
+        {
+            tbCurrent.Width = Double.NaN;
+        }
+
+        public TextBlock CalculateHeight(TextBlock currentTextBlock)
         {
             var tb = new TextBlock { Text = currentTextBlock.Text, FontSize = currentTextBlock.FontSize };
+            tb.MinWidth = 0;
             tb.MaxWidth = currentTextBlock.RenderSize.Width;
+            tb.MaxHeight = Double.PositiveInfinity;
             tb.TextWrapping = TextWrapping.WrapWholeWords;
 
-            tb.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
-           
-            return tb.DesiredSize;
+            tb.Measure(new Size(currentTextBlock.RenderSize.Width, Double.PositiveInfinity));
+            tb.Arrange(new Rect(0, 0, tb.DesiredSize.Width, tb.DesiredSize.Height));
+            tb.UpdateLayout();
+
+            return tb;
         }
 
         public void AddInline(Inline item)
@@ -89,12 +110,13 @@ namespace DrongoControls.UWP
         public void Animate(object newContent, bool isText = true, bool fixedWidth = true)
         {
             //Get current size
-            Size oldSize = CalculateHeight(tbCurrent);
+            Size oldSize = CalculateHeight(tbCurrent).DesiredSize;
 
             DrongoTextBlock dTb = new DrongoTextBlock();
             if (fixedWidth)
             {
                 dTb.Width = tbCurrent.RenderSize.Width;
+                oldHeightKeyFrame.Value = oldSize.Height;
             }
             else
             {
@@ -111,26 +133,46 @@ namespace DrongoControls.UWP
             }
 
             // New size
-            Size newSize = dTb.CalculateHeight(dTb.tbCurrent);
-            newSize = newSize;
+            Size newSize = dTb.CalculateHeight(dTb.tbCurrent).DesiredSize;
 
             if (fixedWidth)
             {
-                tbCurrent.Height = newSize.Height;
+                //tbCurrent.Height = newSize.Height;
+
+                heightKeyFrame.Value = newSize.Height;
             }
             else
             {
-                tbCurrent.Width = newSize.Width;
+                //tbCurrent.Width = newSize.Width;
             }
 
-            if (isText)
+            NewSize = newSize;
+
+            IsText = isText;
+            NewContent = newContent;
+            AnimateHeight.Begin();
+
+            //if (IsText)
+            //{
+            //    TextNonAnimated = (string)NewContent;
+            //}
+            //else
+            //{
+            //    SetInlinePrivate(tbCurrent, (InlineCollection)NewContent, false);
+            //}
+        }
+
+        private void AnimateHeight_Completed(object sender, object e)
+        {
+            if (IsText)
             {
-                TextNonAnimated = (string)newContent;
+                TextNonAnimated = (string)NewContent;
             }
             else
             {
-                SetInlinePrivate(tbCurrent, (InlineCollection)newContent, false);
+                SetInlinePrivate(tbCurrent, (InlineCollection)NewContent, false);
             }
+            NewSize = NewSize;
         }
     }
 }

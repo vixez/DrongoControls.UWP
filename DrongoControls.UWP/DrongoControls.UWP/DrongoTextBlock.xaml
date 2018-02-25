@@ -8,8 +8,16 @@
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
+    <UserControl.Resources>
+        <Storyboard x:Name="AnimateHeight" Completed="AnimateHeight_Completed">
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="tbCurrent">
+                <EasingDoubleKeyFrame x:Name="oldHeightKeyFrame" KeyTime="0" Value="0"/>
+                <EasingDoubleKeyFrame x:Name="heightKeyFrame" KeyTime="0:0:0.5" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </UserControl.Resources>
 
-    <Grid>
-        <TextBlock x:Name="tbCurrent" TextWrapping="WrapWholeWords"></TextBlock>
+    <Grid Background="#FFEA3535">
+        <TextBlock x:Name="tbCurrent" TextWrapping="WrapWholeWords"/>
     </Grid>
 </UserControl>
