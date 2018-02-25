@@ -13,6 +13,7 @@
             <StackPanel>
                 <Button x:Name="btnSetText" Content="Set Text" Tapped="btnSetText_Tapped"></Button>
                 <Button x:Name="btnSetTextLarge" Content="Set Text Large" Tapped="btnSetTextLarge_Tapped"></Button>
+                <Button x:Name="btnInlineText" Content="Set Inline" Tapped="btnInlineText_Tapped"/>
 
                 <uwp:DrongoTextBlock x:Name="drongoTextBlock" Text="Start" AutoHeight="True"></uwp:DrongoTextBlock>
 

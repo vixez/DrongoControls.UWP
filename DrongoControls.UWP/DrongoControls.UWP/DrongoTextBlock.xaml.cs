@@ -99,23 +99,29 @@ namespace DrongoControls.UWP
             tbCurrent.Inlines.Add(item);
         }
 
-        public void SetInline(InlineCollection collection)
+        public void SetInline(List<Inline> collection)
         {
-            SetInlinePrivate(tbCurrent, collection);
+            Animate(collection, isText:false, fixedWidth: true);
+            //SetInlinePrivate(tbCurrent, collection);
         }
 
-        private void SetInlinePrivate(TextBlock dTb, InlineCollection collection, bool animate = true)
+        public InlineCollection GetInlineCollection()
+        {
+            return tbCurrent.Inlines;
+        }
+
+        private void SetInlinePrivate(TextBlock dTb, List<Inline> collection, bool animate = true)
         {
             if (collection == null) return;
             if (animate)
             {
-                Animate(collection, fixedWidth: true);
+                Animate(collection, isText:false, fixedWidth: true);
             }
 
-            tbCurrent.Inlines.Clear();
-            foreach (var item in collection.ToList())
+            dTb.Inlines.Clear();
+            foreach (var item in collection)
             {
-                tbCurrent.Inlines.Add(item);
+                dTb.Inlines.Add(item);
             }
         }
 
@@ -141,7 +147,7 @@ namespace DrongoControls.UWP
             }
             else
             {
-                SetInlinePrivate(dTb.tbCurrent, (InlineCollection)newContent, false);
+                SetInlinePrivate(dTb.tbCurrent, (List<Inline>)newContent, false);
             }
 
             // New size
@@ -157,6 +163,9 @@ namespace DrongoControls.UWP
             {
                 //tbCurrent.Width = newSize.Width;
             }
+
+            dTb.tbCurrent.Inlines.Clear();
+
 
             NewSize = newSize;
 
@@ -174,7 +183,7 @@ namespace DrongoControls.UWP
             }
             else
             {
-                SetInlinePrivate(tbCurrent, (InlineCollection)NewContent, false);
+                SetInlinePrivate(tbCurrent, (List<Inline>)NewContent, false);
             }
             tbCurrent.Height = Double.NaN;
             FadeIn.Begin();
