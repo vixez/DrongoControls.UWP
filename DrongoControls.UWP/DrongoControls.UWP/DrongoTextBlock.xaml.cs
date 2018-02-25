@@ -43,14 +43,14 @@ namespace DrongoControls.UWP
             }
         }
 
-        public static DependencyProperty AutoWidthProperty = DependencyProperty.Register("AutoWidth", typeof(bool), typeof(DrongoTextBlock), new PropertyMetadata("AutoWidth"));
-        public bool AutoWidth
+        public static DependencyProperty AutoHeightProperty = DependencyProperty.Register("AutoHeight", typeof(bool), typeof(DrongoTextBlock), new PropertyMetadata("AutoHeight"));
+        public bool AutoHeight
         {
-            get { return (bool)GetValue(AutoWidthProperty); }
+            get { return (bool)GetValue(AutoHeightProperty); }
 
             set
             {
-                this.SetValue(AutoWidthProperty, value);
+                this.SetValue(AutoHeightProperty, value);
                 if (value)
                 {
                     tbCurrent.Width = Double.NaN;

@@ -14,7 +14,7 @@
                 <Button x:Name="btnSetText" Content="Set Text" Tapped="btnSetText_Tapped"></Button>
                 <Button x:Name="btnSetTextLarge" Content="Set Text Large" Tapped="btnSetTextLarge_Tapped"></Button>
 
-                <uwp:DrongoTextBlock x:Name="drongoTextBlock" Text="Start" AutoWidth="true"></uwp:DrongoTextBlock>
+                <uwp:DrongoTextBlock x:Name="drongoTextBlock" Text="Start" AutoHeight="True"></uwp:DrongoTextBlock>
 
 
                 <Grid Background="Red" Width="100" Height="100"></Grid>
