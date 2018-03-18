@@ -172,6 +172,8 @@ namespace DrongoControls.UWP
             IsText = isText;
             NewContent = newContent;
 
+            var resoruce = Application.Current.Resources["AnimateHeight"];
+            resoruce = resoruce;
             FadeOut.Begin();
         }
 

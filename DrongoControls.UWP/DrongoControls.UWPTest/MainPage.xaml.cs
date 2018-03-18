@@ -73,7 +73,7 @@ namespace DrongoControls.UWPTest
             //ic.Add(ln2);
             //drongoTextBlock.SetInline(ic);
 
-            // RichTextBlock
+            // RichTextBlocksour
             Paragraph para = new Paragraph();
 
             para.Inlines.Add(ln);
