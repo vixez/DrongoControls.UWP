@@ -17,6 +17,8 @@
 
                 <uwp:DrongoTextBlock x:Name="drongoTextBlock" Text="Start" AutoHeight="True"></uwp:DrongoTextBlock>
 
+                <uwp:DrongoRichTextBlock x:Name="drongoRichTextBlock" Text="Start" AutoHeight="True"></uwp:DrongoRichTextBlock>
+
 
                 <Grid Background="Red" Width="100" Height="100"></Grid>
             </StackPanel>
