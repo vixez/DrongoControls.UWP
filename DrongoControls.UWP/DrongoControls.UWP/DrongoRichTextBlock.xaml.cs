@@ -20,6 +20,8 @@ namespace DrongoControls.UWP
 {
     public sealed partial class DrongoRichTextBlock : UserControl
     {
+        double _oldHeightKeyFrame = 0;
+        double _heightKeyFrame = 0;
         private string _text;
 
         public static DependencyProperty NewHeightProperty = DependencyProperty.Register("NewHeight", typeof(double), typeof(DrongoTextBlock), new PropertyMetadata("NewHeight"));
@@ -149,7 +151,7 @@ namespace DrongoControls.UWP
             if (fixedWidth)
             {
                 dTb.Width = tbCurrent.RenderSize.Width;
-                oldHeightKeyFrame.Value = oldSize.Height;
+                _oldHeightKeyFrame = oldSize.Height;
             }
             else
             {
@@ -172,7 +174,7 @@ namespace DrongoControls.UWP
             {
                 //tbCurrent.Height = newSize.Height;
 
-                heightKeyFrame.Value = newSize.Height;
+                _heightKeyFrame = newSize.Height;
             }
             else
             {
@@ -187,7 +189,7 @@ namespace DrongoControls.UWP
             IsText = isText;
             NewContent = newContent;
 
-            FadeOut.Begin();
+            CustomAnimations.FadeOut(tbCurrent, FadeOut_Completed).Begin();
         }
 
         private void AnimateHeight_Completed(object sender, object e)
@@ -201,7 +203,7 @@ namespace DrongoControls.UWP
                 SetInlinePrivate(tbCurrent, (List<Block>)NewContent, false);
             }
             tbCurrent.Height = Double.NaN;
-            FadeIn.Begin();
+            CustomAnimations.FadeIn(tbCurrent, FadeIn_Completed).Begin();
         }
 
         private void FadeIn_Completed(object sender, object e)
@@ -211,7 +213,7 @@ namespace DrongoControls.UWP
 
         private void FadeOut_Completed(object sender, object e)
         {
-            AnimateHeight.Begin();
+            CustomAnimations.AnimateHeight(tbCurrent, AnimateHeight_Completed, _oldHeightKeyFrame, _heightKeyFrame).Begin();
         }
     }
 }

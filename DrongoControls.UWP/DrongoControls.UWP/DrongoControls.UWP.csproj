@@ -107,6 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Class1.cs" />
+    <Compile Include="CustomAnimations.cs" />
     <Compile Include="DrongoTextBlock.xaml.cs">
       <DependentUpon>DrongoTextBlock.xaml</DependentUpon>
     </Compile>
@@ -122,11 +123,6 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="AnimationsDictionary.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
     <Page Include="DrongoRichTextBlock.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

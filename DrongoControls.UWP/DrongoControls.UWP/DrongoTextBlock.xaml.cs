@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -20,6 +21,9 @@ namespace DrongoControls.UWP
 {
     public sealed partial class DrongoTextBlock : UserControl
     {
+        double _oldHeightKeyFrame = 0;
+        double _heightKeyFrame = 0;
+
         public static DependencyProperty NewHeightProperty = DependencyProperty.Register("NewHeight", typeof(double), typeof(DrongoTextBlock), new PropertyMetadata("NewHeight"));
         public double NewHeight
         {
@@ -134,7 +138,7 @@ namespace DrongoControls.UWP
             if (fixedWidth)
             {
                 dTb.Width = tbCurrent.RenderSize.Width;
-                oldHeightKeyFrame.Value = oldSize.Height;
+                _oldHeightKeyFrame = oldSize.Height;
             }
             else
             {
@@ -157,7 +161,7 @@ namespace DrongoControls.UWP
             {
                 //tbCurrent.Height = newSize.Height;
 
-                heightKeyFrame.Value = newSize.Height;
+                _heightKeyFrame = newSize.Height;
             }
             else
             {
@@ -172,9 +176,7 @@ namespace DrongoControls.UWP
             IsText = isText;
             NewContent = newContent;
 
-            var resoruce = Application.Current.Resources["AnimateHeight"];
-            resoruce = resoruce;
-            FadeOut.Begin();
+            CustomAnimations.FadeOut(tbCurrent, FadeOut_Completed).Begin();
         }
 
         private void AnimateHeight_Completed(object sender, object e)
@@ -188,7 +190,8 @@ namespace DrongoControls.UWP
                 SetInlinePrivate(tbCurrent, (List<Inline>)NewContent, false);
             }
             tbCurrent.Height = Double.NaN;
-            FadeIn.Begin();
+
+            CustomAnimations.FadeIn(tbCurrent, FadeIn_Completed).Begin();
         }
 
         private void FadeIn_Completed(object sender, object e)
@@ -198,7 +201,7 @@ namespace DrongoControls.UWP
 
         private void FadeOut_Completed(object sender, object e)
         {
-            AnimateHeight.Begin();
+            CustomAnimations.AnimateHeight(tbCurrent, AnimateHeight_Completed, _oldHeightKeyFrame, _heightKeyFrame).Begin();
         }
     }
 }
