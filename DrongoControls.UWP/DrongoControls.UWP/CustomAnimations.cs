@@ -10,10 +10,19 @@ namespace DrongoControls.UWP
 {
     public class CustomAnimations
     {
-        public static Storyboard FadeIn(DependencyObject control, System.EventHandler<object> function)
+        Storyboard sbFadeIn = new Storyboard();
+        Storyboard sbFadeOut = new Storyboard();
+        Storyboard sbFadeAnimateHeight = new Storyboard();
+
+        public void SetupEventHandlers(EventHandler<object> fadeIn, EventHandler<object> fadeOut, EventHandler<object> animateHeight)
         {
-            Storyboard sb = new Storyboard();
-            sb.Completed += function;
+            sbFadeIn.Completed += fadeIn;
+            sbFadeOut.Completed += fadeOut;
+            sbFadeAnimateHeight.Completed += animateHeight;
+        }
+
+        public Storyboard FadeIn(DependencyObject control)
+        {
             DoubleAnimation da = new DoubleAnimation()
             {
                 Duration = TimeSpan.FromMilliseconds(150),
@@ -24,14 +33,12 @@ namespace DrongoControls.UWP
             da.SetValue(Storyboard.TargetPropertyProperty, "UIElement.Opacity");
             Storyboard.SetTarget(da, control);
 
-            sb.Children.Add(da);
-            return sb;
+            sbFadeIn.Children.Add(da);
+            return sbFadeIn;
         }
 
-        public static Storyboard FadeOut(DependencyObject control, System.EventHandler<object> function)
+        public Storyboard FadeOut(DependencyObject control)
         {
-            Storyboard sb = new Storyboard();
-            sb.Completed += function;
             DoubleAnimation da = new DoubleAnimation()
             {
                 Duration = TimeSpan.FromMilliseconds(150),
@@ -42,15 +49,12 @@ namespace DrongoControls.UWP
             da.SetValue(Storyboard.TargetPropertyProperty, "UIElement.Opacity");
             Storyboard.SetTarget(da, control);
 
-            sb.Children.Add(da);
-            return sb;
+            sbFadeOut.Children.Add(da);
+            return sbFadeOut;
         }
 
-        public static Storyboard AnimateHeight(DependencyObject control, System.EventHandler<object> function, double oldHeight, double newHeight)
+        public Storyboard AnimateHeight(DependencyObject control, double oldHeight, double newHeight)
         {
-            Storyboard sb = new Storyboard();
-            sb.Completed += function;
-
             DoubleAnimationUsingKeyFrames da = new DoubleAnimationUsingKeyFrames()
             {
                 EnableDependentAnimation = true
@@ -74,8 +78,8 @@ namespace DrongoControls.UWP
 
             Storyboard.SetTarget(da, control);
 
-            sb.Children.Add(da);
-            return sb;
+            sbFadeAnimateHeight.Children.Add(da);
+            return sbFadeAnimateHeight;
         }
     }
 }

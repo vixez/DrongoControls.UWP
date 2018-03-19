@@ -76,10 +76,12 @@ namespace DrongoControls.UWP
 
         bool IsText;
         object NewContent;
+        CustomAnimations customAnimations = new CustomAnimations();
 
         public DrongoTextBlock()
         {
             this.InitializeComponent();
+            customAnimations.SetupEventHandlers(FadeIn_Completed, FadeOut_Completed, AnimateHeight_Completed);
         }
 
         public TextBlock CalculateHeight(TextBlock currentTextBlock, double width)
@@ -176,11 +178,12 @@ namespace DrongoControls.UWP
             IsText = isText;
             NewContent = newContent;
 
-            CustomAnimations.FadeOut(tbCurrent, FadeOut_Completed).Begin();
+            customAnimations.FadeOut(tbCurrent).Begin();
         }
 
         private void AnimateHeight_Completed(object sender, object e)
         {
+            ((Storyboard)sender).Completed -= AnimateHeight_Completed;
             if (IsText)
             {
                 TextNonAnimated = (string)NewContent;
@@ -191,17 +194,18 @@ namespace DrongoControls.UWP
             }
             tbCurrent.Height = Double.NaN;
 
-            CustomAnimations.FadeIn(tbCurrent, FadeIn_Completed).Begin();
+            customAnimations.FadeIn(tbCurrent).Begin();
         }
 
         private void FadeIn_Completed(object sender, object e)
         {
-
+            ((Storyboard)sender).Completed -= FadeIn_Completed;
         }
 
         private void FadeOut_Completed(object sender, object e)
         {
-            CustomAnimations.AnimateHeight(tbCurrent, AnimateHeight_Completed, _oldHeightKeyFrame, _heightKeyFrame).Begin();
+            ((Storyboard)sender).Completed -= FadeOut_Completed;
+            customAnimations.AnimateHeight(tbCurrent, _oldHeightKeyFrame, _heightKeyFrame).Begin();
         }
     }
 }

@@ -76,10 +76,12 @@ namespace DrongoControls.UWP
 
         bool IsText;
         object NewContent;
+        CustomAnimations customAnimations = new CustomAnimations();
 
         public DrongoRichTextBlock()
         {
             this.InitializeComponent();
+            customAnimations.SetupEventHandlers(FadeIn_Completed, FadeOut_Completed, AnimateHeight_Completed);
         }
 
 
@@ -161,14 +163,17 @@ namespace DrongoControls.UWP
             if (isText)
             {
                 dTb.TextNonAnimated = (string)newContent;
+               
             }
             else
             {
                 SetInlinePrivate(dTb.tbCurrent, (List<Block>)newContent, false);
             }
 
-            // New size
-            Size newSize = dTb.CalculateHeight(dTb.tbCurrent, oldSize.Width).DesiredSize;
+            dTb.TextNonAnimated = _text;
+
+           // New size
+           Size newSize = dTb.CalculateHeight(dTb.tbCurrent, oldSize.Width).DesiredSize;
 
             if (fixedWidth)
             {
@@ -189,7 +194,7 @@ namespace DrongoControls.UWP
             IsText = isText;
             NewContent = newContent;
 
-            CustomAnimations.FadeOut(tbCurrent, FadeOut_Completed).Begin();
+            customAnimations.FadeOut(tbCurrent).Begin();
         }
 
         private void AnimateHeight_Completed(object sender, object e)
@@ -203,7 +208,7 @@ namespace DrongoControls.UWP
                 SetInlinePrivate(tbCurrent, (List<Block>)NewContent, false);
             }
             tbCurrent.Height = Double.NaN;
-            CustomAnimations.FadeIn(tbCurrent, FadeIn_Completed).Begin();
+            customAnimations.FadeIn(tbCurrent).Begin();
         }
 
         private void FadeIn_Completed(object sender, object e)
@@ -213,7 +218,7 @@ namespace DrongoControls.UWP
 
         private void FadeOut_Completed(object sender, object e)
         {
-            CustomAnimations.AnimateHeight(tbCurrent, AnimateHeight_Completed, _oldHeightKeyFrame, _heightKeyFrame).Begin();
+            customAnimations.AnimateHeight(tbCurrent, _oldHeightKeyFrame, _heightKeyFrame).Begin();
         }
     }
 }
