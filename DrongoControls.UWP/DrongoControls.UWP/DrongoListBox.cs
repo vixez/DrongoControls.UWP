@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace DrongoControls.UWP
@@ -12,7 +15,6 @@ namespace DrongoControls.UWP
     {  
         CustomAnimations customAnimations = new CustomAnimations();
         Size oldSize;
-        Size newSize;
         private object itemsToSet;
 
         public DrongoListBox()
@@ -23,15 +25,14 @@ namespace DrongoControls.UWP
         public void SetCustomItemsSource(object newItems)
         {
             oldSize = DesiredSize;
-            newSize = CalculateHeight(newItems).DesiredSize;
             itemsToSet = newItems;
-            //customAnimations.FadeInAndAnimateHeight(this, true, oldSize.Height, newSize.Height);
             customAnimations.FadeOut(this).Begin();
         }
 
         private void AnimateHeight_Completed(object sender, object e)
         {
             customAnimations.FadeIn(this).Begin();
+            Height = Double.NaN;
         }
 
         private void FadeIn_Completed(object sender, object e)
@@ -42,23 +43,16 @@ namespace DrongoControls.UWP
         private void FadeOut_Completed(object sender, object e)
         {
             ItemsSource = itemsToSet;
-            customAnimations.AnimateHeight(this, oldSize.Height, newSize.Height).Begin();
-        }
 
-        private ListBox CalculateHeight(object newItems)
-        {
-            ListBox lb = new ListBox();
-            lb.ItemTemplate = ItemTemplate;
-            lb.ItemTemplateSelector = ItemTemplateSelector;
-            lb.Template = Template;
-            lb.Width = lb.Width;
-            lb.ItemsSource = newItems;
+            InvalidateArrange();
+            InvalidateMeasure();
+            Debug.WriteLine("mid height: " + Height);
+            Measure(new Size(ActualWidth, Double.PositiveInfinity));
+            Arrange(new Rect(0, 0, ActualWidth, DesiredSize.Height));
 
-            lb.Measure(new Size(ActualWidth, Double.PositiveInfinity));
-            lb.Arrange(new Rect(0, 0, ActualWidth, lb.DesiredSize.Height));
-            lb.UpdateLayout();
+            UpdateLayout();
 
-            return lb;
+            customAnimations.AnimateHeight(this, oldSize.Height, DesiredSize.Height).Begin();
         }
     }
 }
