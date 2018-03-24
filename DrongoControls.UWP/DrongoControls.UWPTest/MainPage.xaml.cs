@@ -34,7 +34,7 @@ namespace DrongoControls.UWPTest
         private void btnSetText_Tapped(object sender, TappedRoutedEventArgs e)
         {
             drongoTextBlock.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
-            drongoRichTextBlock.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
+            //drongoRichTextBlock.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit";
         }
 
         private void btnSetTextLarge_Tapped(object sender, TappedRoutedEventArgs e)
@@ -42,9 +42,9 @@ namespace DrongoControls.UWPTest
             drongoTextBlock.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" +
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" +
                 "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
-            drongoRichTextBlock.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" +
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" +
-                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
+            //drongoRichTextBlock.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" +
+            //    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat" +
+            //    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.";
 
         }
 
@@ -95,10 +95,12 @@ namespace DrongoControls.UWPTest
             bc.Add(para);
 
             // End
+            string text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, link sed do eiusmod tempor incididunt ut";
+            
 
-            drongoRichTextBlock.Text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, link sed do eiusmod tempor incididunt ut";
+            // drongoRichTextBlock.Text = 
 
-            drongoRichTextBlock.SetInline(bc);
+            drongoRichTextBlock.SetInline(bc, text);
         }
 
         private void Hpb_PointerExited(object sender, PointerRoutedEventArgs e)
@@ -114,6 +116,19 @@ namespace DrongoControls.UWPTest
         private void Hpb_Click(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("Tag: " + ((TextBlock)sender).Tag);
+        }
+
+        private void btnListBoxItems_Tapped(object sender, TappedRoutedEventArgs e)
+        {
+            Random rnd = new Random();
+            List<string> list = new List<string>();
+            int random = rnd.Next(3, 10);
+            for (int i = 0; i < random; i++)
+            {
+                list.Add("String: " + i);
+            }
+
+            drongoListBox.SetCustomItemsSource(list);
         }
     }
 }

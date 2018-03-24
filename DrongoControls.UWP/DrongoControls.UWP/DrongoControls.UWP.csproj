@@ -108,6 +108,7 @@
   <ItemGroup>
     <Compile Include="Class1.cs" />
     <Compile Include="CustomAnimations.cs" />
+    <Compile Include="DrongoListBox.cs" />
     <Compile Include="DrongoTextBlock.xaml.cs">
       <DependentUpon>DrongoTextBlock.xaml</DependentUpon>
     </Compile>

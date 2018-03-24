@@ -14,10 +14,13 @@
                 <Button x:Name="btnSetText" Content="Set Text" Tapped="btnSetText_Tapped"></Button>
                 <Button x:Name="btnSetTextLarge" Content="Set Text Large" Tapped="btnSetTextLarge_Tapped"></Button>
                 <Button x:Name="btnInlineText" Content="Set Inline" Tapped="btnInlineText_Tapped"/>
+                <Button x:Name="btnListBoxItems" Content="Set Listbox" Tapped="btnListBoxItems_Tapped" />
 
                 <uwp:DrongoTextBlock x:Name="drongoTextBlock" Text="Start" AutoHeight="True"></uwp:DrongoTextBlock>
 
-                <uwp:DrongoRichTextBlock x:Name="drongoRichTextBlock" Text="Start" AutoHeight="True"></uwp:DrongoRichTextBlock>
+                <uwp:DrongoRichTextBlock x:Name="drongoRichTextBlock"></uwp:DrongoRichTextBlock>
+
+                <uwp:DrongoListBox x:Name="drongoListBox"></uwp:DrongoListBox>
 
 
                 <Grid Background="Red" Width="100" Height="100"></Grid>
