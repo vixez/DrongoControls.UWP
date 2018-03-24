@@ -1,18 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Documents;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -118,9 +109,9 @@ namespace DrongoControls.UWP
             tbCurrent.Blocks.Add(item);
         }
 
-        public void SetInline(List<Block> collection)
+        public void SetInline(List<Block> collection, string newText)
         {
-            Animate(collection, isText: false, fixedWidth: true);
+            Animate(collection, isText: false, fixedWidth: true, newText:newText);
             //SetInlinePrivate(tbCurrent, collection);
         }
 
@@ -144,10 +135,11 @@ namespace DrongoControls.UWP
             }
         }
 
-        public void Animate(object newContent, bool isText = true, bool fixedWidth = true)
+        public void Animate(object newContent, bool isText = true, bool fixedWidth = true, string newText = "")
         {
             //Get current size
             Size oldSize = CalculateHeight(tbCurrent, tbCurrent.RenderSize.Width).DesiredSize;
+            TextNonAnimated = newText;
 
             DrongoRichTextBlock dTb = new DrongoRichTextBlock();
             if (fixedWidth)
@@ -162,18 +154,19 @@ namespace DrongoControls.UWP
 
             if (isText)
             {
-                dTb.TextNonAnimated = (string)newContent;
+               
                
             }
             else
             {
-                SetInlinePrivate(dTb.tbCurrent, (List<Block>)newContent, false);
+                
             }
 
-            dTb.TextNonAnimated = _text;
+            dTb.TextNonAnimated = newText;
+            SetInlinePrivate(dTb.tbCurrent, (List<Block>)newContent, false);
 
-           // New size
-           Size newSize = dTb.CalculateHeight(dTb.tbCurrent, oldSize.Width).DesiredSize;
+            // New size
+            Size newSize = dTb.CalculateHeight(dTb.tbCurrent, oldSize.Width).DesiredSize;
 
             if (fixedWidth)
             {
