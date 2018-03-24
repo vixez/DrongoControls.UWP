@@ -80,7 +80,7 @@ namespace DrongoControls.UWP
 
             EasingDoubleKeyFrame heightKeyFrame = new EasingDoubleKeyFrame()
             {
-                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(200)),
+                KeyTime = KeyTime.FromTimeSpan(TimeSpan.FromMilliseconds(400)),
                 Value = newHeight,
                 EasingFunction = new CircleEase { EasingMode = EasingMode.EaseInOut }
             };
@@ -96,7 +96,7 @@ namespace DrongoControls.UWP
 
         public Storyboard IncreaseScale(UIElement control, bool fadeIn = false)
         {
-            int time = 2000;
+            int time = 1200;
             Storyboard storyboard = new Storyboard();
 
             ScaleTransform scale = new ScaleTransform();
