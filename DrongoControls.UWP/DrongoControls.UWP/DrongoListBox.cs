@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
@@ -12,14 +13,21 @@ using Windows.UI.Xaml.Controls;
 namespace DrongoControls.UWP
 {
     public class DrongoListBox: ListBox
-    {  
+    {
         CustomAnimations customAnimations = new CustomAnimations();
         Size oldSize;
         private object itemsToSet;
+        private EventHandler<object> updateDataEvent;
+
 
         public DrongoListBox()
         {
             customAnimations.SetupEventHandlers(FadeIn_Completed, FadeOut_Completed, AnimateHeight_Completed);
+        }
+
+        public void SetUpdateDataEvent(EventHandler<object> updateDataEvent)
+        {
+            this.updateDataEvent = updateDataEvent;
         }
 
         public void SetCustomItemsSource(object newItems)
@@ -42,8 +50,8 @@ namespace DrongoControls.UWP
 
         private void FadeOut_Completed(object sender, object e)
         {
-            ItemsSource = itemsToSet;
-
+            //ItemsSource = itemsToSet;
+            updateDataEvent?.Invoke(null, itemsToSet);
             InvalidateArrange();
             InvalidateMeasure();
             Debug.WriteLine("mid height: " + Height);
