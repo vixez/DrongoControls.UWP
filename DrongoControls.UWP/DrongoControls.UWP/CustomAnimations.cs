@@ -24,14 +24,15 @@ namespace DrongoControls.UWP
             this.animateHeight = animateHeight;
         }
 
-        public Storyboard FadeIn(DependencyObject control)
+        public Storyboard FadeIn(DependencyObject control, double customTime = 150, double delay = 0)
         {
             Storyboard sbFadeIn = new Storyboard();
             sbFadeIn.Completed += fadeIn;
 
             DoubleAnimation da = new DoubleAnimation()
             {
-                Duration = TimeSpan.FromMilliseconds(150),
+                Duration = TimeSpan.FromMilliseconds(customTime),
+                BeginTime = TimeSpan.FromMilliseconds(delay),
                 To = 1,
                 EasingFunction = new CircleEase { EasingMode = EasingMode.EaseInOut }
             };
