@@ -31,6 +31,16 @@ namespace DrongoControls.UWP
             set { this.SetValue(NewHeightProperty, value); }
         }
 
+        public static DependencyProperty StyleProperty = DependencyProperty.Register("Style", typeof(Style), typeof(DrongoTextBlock), new PropertyMetadata("Style"));
+        public Style Style
+        {
+            get { return (Style)GetValue(StyleProperty); }
+            set {
+                this.SetValue(StyleProperty, value);
+                //tbCurrent.Style = value;
+            }
+        }
+
         Size NewSize;
 
         public static DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(DrongoTextBlock), new PropertyMetadata("Text"));
@@ -92,6 +102,7 @@ namespace DrongoControls.UWP
             tb.Width = width;
             tb.MaxHeight = Double.PositiveInfinity;
             tb.TextWrapping = TextWrapping.WrapWholeWords;
+            //tb.Style = Style;
 
             tb.Measure(new Size(width, Double.PositiveInfinity));
             tb.Arrange(new Rect(0, 0, width, tb.DesiredSize.Height));
